@@ -7,7 +7,7 @@
 ** AUTHOR:      Dan Garcia  -  University of California at Berkeley
 **              Copyright (C) Dan Garcia, 2020. All rights reserved.
 **              Justin Yokota - Starter Code
-**				Beiqian Liu
+**              Beiqian Liu
 **
 **
 ** DATE:        2020-08-15
@@ -46,7 +46,7 @@ Image *readData(char *filename) {
             exit(-1);
         }
         fscanf(fp, "%hhu %hhu %hhu\n", &pixel->R, &pixel->G, &pixel->B);
-        pixels[i] = pixel;
+        *(pixels + i) = pixel;
     }
 
     img->image = pixels;
@@ -58,14 +58,14 @@ Image *readData(char *filename) {
 //Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the image's data.
 void writeData(Image *image) {
     printf("P3\n%d %d\n255\n", image->cols, image->rows);
-    int i = 0;
+    Color **pixels = image->image;
     for (int r = 0; r < image->rows; r++) {
         for (int c = 0; c < image->cols - 1; c++) {
-            printf("%3d %3d %3d   ", image->image[i]->R, image->image[i]->G, image->image[i]->B);
-            i++;
+            printf("%3d %3d %3d   ", (*pixels)->R, (*pixels)->G, (*pixels)->B);
+            pixels++;
         }
-        printf("%3d %3d %3d\n", image->image[i]->R, image->image[i]->G, image->image[i]->B);
-        i++;
+        printf("%3d %3d %3d\n", (*pixels)->R, (*pixels)->G, (*pixels)->B);
+        pixels++;
     }
 }
 
@@ -73,7 +73,7 @@ void writeData(Image *image) {
 void freeImage(Image *image) {
     int pixelNum = image->cols * image->rows;
     for (int i = 0; i < pixelNum; i++) {
-        free(image->image[i]);
+        free(*(image->image + i));
     }
     free(image->image);
     free(image);
