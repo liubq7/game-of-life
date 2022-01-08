@@ -41,7 +41,7 @@ Image *readData(char *filename) {
     }
 
     for (int i = 0; i < pixelNum; i++) {
-        Color *pixel = (Color *) malloc(sizeof(Color *));
+        Color *pixel = (Color *) malloc(sizeof(Color));
         if (!pixel) {
             exit(-1);
         }
